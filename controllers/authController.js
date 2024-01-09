@@ -1,12 +1,12 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/userModel');
 
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log(req.body)
+    // console.log(req.body)
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -21,7 +21,7 @@ const register = async (req, res) => {
     res.json({ message: 'User registered successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error', error });
   }
 };
 
@@ -42,9 +42,10 @@ const login = async (req, res) => {
     const token = jwt.sign({ user: { id: user._id, email: user.email } }, process.env.SECRETKEY);
 
     res.json({ user, token });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error', error });
   }
 };
 

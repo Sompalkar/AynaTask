@@ -6,7 +6,7 @@ const bookRoutes = require('./routes/bookRoutes');
 const authorRoutes = require('./routes/authorRoutes');
 const dotenv = require('dotenv');
 const { faker } = require('@faker-js/faker')
-const User = require('./models/user.js')
+const User = require('./models/userModel.js')
 const Book = require('./models/bookModel.js')
 
 
@@ -19,15 +19,24 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 // Database connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
+
+mongoose.connect(process.env.MONGO_URI,
+  {}
+
+).then(() => {
+
+  console.log("\n Mongo database connected \n ");
+
+}).catch((error) => {
+  console.log(error)
+  throw new Error(error);
+})
 
 
- 
+
+
+
+
 // Create mock data for users
 const createMockData = async () => {
   try {
@@ -78,5 +87,5 @@ app.use('/api', authorRoutes);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`\n Server is running on port ${PORT}  `);
 });

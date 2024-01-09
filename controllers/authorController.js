@@ -1,9 +1,9 @@
- 
-const User = require('../models/user.js');
+
+const User = require('../models/userModel.js');
 
 const getAllAuthors = async (req, res) => {
   try {
-    const authors = await User.find() 
+    const authors = await User.find()
     res.json(authors);
   } catch (error) {
     console.error(error);
@@ -16,7 +16,7 @@ const getAuthorById = async (req, res) => {
     const { id } = req.params;
 
 
-    const authorDoc = await User.findById(id) ;
+    const authorDoc = await User.findById(id);
     if (!authorDoc) {
       return res.status(404).json({ message: 'Author not found' });
     }
@@ -30,13 +30,13 @@ const getAuthorById = async (req, res) => {
 
 const getLoggedInAuthor = async (req, res) => {
   const authorId = req.params.authorId;
- 
+
   if (authorId.toLowerCase() === 'me') {
-    
+
     const loggedInAuthor = req.user;
     return res.json(loggedInAuthor);
   }
- 
+
   try {
     const authorDoc = await User.findById(authorId);
 
